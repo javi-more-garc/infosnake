@@ -64,7 +64,7 @@ public class MatchServiceImpl implements MatchService {
 		addReceivers(mapUsers, userEmails, receiverEmails);
 
 		//
-		// 5 users in Clevereach that were not imported and whose email does not
+		// 5 users in Clevereach that were imported and whose email does not
 		// appear in Cleverreach (-> remove them from Cleverreach)
 		removeReceivers(mapReceivers, userEmails);
 
@@ -93,8 +93,9 @@ public class MatchServiceImpl implements MatchService {
 	}
 
 	private void removeReceivers(Map<String, CleverreachReceiver> mapReceivers, Set<String> userEmails) {
-		Set<String> notImportedReceiverEmails = filterNotImported(mapReceivers).keySet();
-		Set<String> emailsToRemove = difference(notImportedReceiverEmails, userEmails);
+		// filter those receivers that were not imported
+		Set<String> importedReceiverEmails = filterNotImported(mapReceivers).keySet();
+		Set<String> emailsToRemove = difference(importedReceiverEmails, userEmails);
 
 		if (isEmpty(emailsToRemove)) {
 			logger.info("*** No receivers to be removed from Cleverreach.");
@@ -177,7 +178,7 @@ public class MatchServiceImpl implements MatchService {
 
 			CleverreachReceiver value = entry.getValue();
 
-			// returning only those with a flag import (1)
+			// returning only those imported (flag import (1)
 			if (value.getFlagImport()) {
 				result.put(entry.getKey(), value);
 			}
