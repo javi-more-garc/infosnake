@@ -12,7 +12,6 @@ import org.apache.http.HttpHost;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -25,7 +24,6 @@ import org.springframework.web.client.RestTemplate;
  */
 
 @Configuration
-@PropertySource("classpath:/infosnake.properties")
 public class InfosnakeConfiguration {
 
 	private static final int READ_TIME_OUT = 5000;

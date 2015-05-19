@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@PropertySource(value = "classpath:scheduler.properties")
 public class Scheduler {
 
 	private Logger logger = LoggerFactory.getLogger(Scheduler.class);
@@ -34,7 +32,7 @@ public class Scheduler {
 
 			logger.info("Finished Infosnake-Cleverreach matching process successfully");
 		} catch (Exception e) {
-
+			logger.error("Scheduler execution failed", e);
 		}
 	}
 }

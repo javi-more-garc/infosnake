@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
@@ -16,7 +15,6 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
  *
  */
 @Configuration
-@PropertySource("classpath:/cleverreach.properties")
 public class CleverreachConfiguration {
 
 	@Inject

@@ -2,6 +2,8 @@ package com.jmg.iic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
@@ -12,6 +14,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
+@PropertySources({ @PropertySource("classpath:/conf.properties"),
+		@PropertySource(value = "file:conf.properties") })
 public class Application {
 
 	public static void main(String[] args) {
