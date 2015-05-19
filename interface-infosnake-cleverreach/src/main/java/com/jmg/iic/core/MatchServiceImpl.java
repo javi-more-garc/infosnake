@@ -124,14 +124,14 @@ public class MatchServiceImpl implements MatchService {
 			CleverreachReceiver cleverreahReceiver = mapReceivers.get(email);
 
 			// if there is any difference
-			if (!infosnakeUser.getFirstName().equals(cleverreahReceiver.getFirstname())
-					|| !infosnakeUser.getLastName().equals(cleverreahReceiver.getLastname())) {
+			if (!infosnakeUser.getFirstname().equals(cleverreahReceiver.getFirstname())
+					|| !infosnakeUser.getLastname().equals(cleverreahReceiver.getLastname())) {
 
 				CleverreachReceiver toUpate = new CleverreachReceiver();
 
 				toUpate.setEmail(cleverreahReceiver.getEmail());
-				toUpate.setFirstname(infosnakeUser.getFirstName());
-				toUpate.setLastname(infosnakeUser.getLastName());
+				toUpate.setFirstname(infosnakeUser.getFirstname());
+				toUpate.setLastname(infosnakeUser.getLastname());
 
 				receiversToUpdate.add(toUpate);
 
@@ -161,8 +161,8 @@ public class MatchServiceImpl implements MatchService {
 				CleverreachReceiver receiver = new CleverreachReceiver();
 
 				receiver.setEmail(email);
-				receiver.setFirstname(user.getFirstName());
-				receiver.setLastname(user.getLastName());
+				receiver.setFirstname(user.getFirstname());
+				receiver.setLastname(user.getLastname());
 
 				result.add(receiver);
 			}

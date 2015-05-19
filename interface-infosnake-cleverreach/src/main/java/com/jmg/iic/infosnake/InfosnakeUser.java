@@ -16,10 +16,10 @@ public class InfosnakeUser {
 	private Integer idWeb;
 
 	@JsonProperty("FIRST_NAME")
-	private String firstName;
+	private String firstname;
 
 	@JsonProperty("LAST_NAME")
-	private String LastName;
+	private String lastname;
 
 	@JsonProperty("EMAIL")
 	private String email;
@@ -32,20 +32,20 @@ public class InfosnakeUser {
 		this.idWeb = idWeb;
 	}
 
-	public String getFirstName() {
-		return this.firstName;
+	public String getFirstname() {
+		return this.firstname;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
-	public String getLastName() {
-		return this.LastName;
+	public String getLastname() {
+		return this.lastname;
 	}
 
-	public void setLastName(String lastName) {
-		this.LastName = lastName;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
 	public String getEmail() {
