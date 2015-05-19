@@ -11,6 +11,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 /**
+ * Configuration class for Cleverreach's functionalities
+ * 
  * @author Javier Moreno Garcia
  *
  */
@@ -32,11 +34,11 @@ public class CleverreachConfiguration {
 	public CleverreachClientImpl cleverreachClient(Jaxb2Marshaller marshaller) {
 
 		// get properties
-
 		String url = env.getRequiredProperty("cleverreach.api.url");
 		String apiKey = env.getRequiredProperty("cleverreach.api.key");
 		Integer listId = env.getRequiredProperty("cleverreach.list.id", Integer.class);
 
+		// instantiate client
 		CleverreachClientImpl client = new CleverreachClientImpl(url, apiKey, listId);
 
 		client.setMarshaller(marshaller);

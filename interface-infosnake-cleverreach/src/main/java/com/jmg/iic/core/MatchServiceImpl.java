@@ -28,6 +28,8 @@ import com.jmg.iic.infosnake.InfosnakeClient;
 import com.jmg.iic.infosnake.InfosnakeUser;
 
 /**
+ * Implementation of {@link MatchService}
+ * 
  * @author Javier Moreno Garcia
  *
  */
@@ -64,13 +66,13 @@ public class MatchServiceImpl implements MatchService {
 		addReceivers(mapUsers, userEmails, receiverEmails);
 
 		//
-		// 5 users in Clevereach that were imported and whose email does not
-		// appear in Cleverreach (-> remove them from Cleverreach)
+		// 5 users in Cleverreach that were imported and whose email does not
+		// appear in Infosnake (-> remove them from Cleverreach)
 		removeReceivers(mapReceivers, userEmails);
 
 		//
-		// 6 users whose emails appear both in users and receivers (-> update
-		// them in Cleverreach)
+		// 6 users whose emails appear both in Infosnake and Cleverreach (->
+		// update them in Cleverreach)
 		updateReceivers(mapUsers, mapReceivers, userEmails, receiverEmails);
 
 	}

@@ -4,6 +4,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Class to encapsulate a Infosnake's user
+ * 
+ * @author Javier Moreno Garcia
+ *
+ */
 public class InfosnakeUser {
 
 	@JsonProperty("ID_WEB")

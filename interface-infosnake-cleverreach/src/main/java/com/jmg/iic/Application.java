@@ -8,6 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * 
+ * Class that servers as the application's launcher
+ * 
  * @author Javier Moreno Garcia
  *
  */

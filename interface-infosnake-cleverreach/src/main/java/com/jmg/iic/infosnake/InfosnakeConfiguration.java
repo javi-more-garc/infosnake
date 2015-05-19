@@ -19,10 +19,11 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 /**
+ * Configuration class for Infosnake's functionalities
+ * 
  * @author Javier Moreno Garcia
  *
  */
-
 @Configuration
 public class InfosnakeConfiguration {
 

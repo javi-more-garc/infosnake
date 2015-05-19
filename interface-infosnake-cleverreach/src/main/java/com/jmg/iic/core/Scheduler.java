@@ -11,6 +11,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
+ * Scheduler component to execute the matching of values between Infosnake and
+ * Cleverreach in certain intervals.
+ * 
  * @author Javier Moreno Garcia
  *
  */

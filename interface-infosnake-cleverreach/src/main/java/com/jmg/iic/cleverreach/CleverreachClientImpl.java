@@ -35,6 +35,7 @@ import com.jmg.iic.cleverreach.xml.ReceiverUpdateBatchResponse;
 import com.jmg.iic.core.GeneralException;
 
 /**
+ * Implementation of {@link CleverreachClient}
  * 
  * @author Javier Moreno Garcia
  *
@@ -42,10 +43,14 @@ import com.jmg.iic.core.GeneralException;
 
 public class CleverreachClientImpl extends WebServiceGatewaySupport implements CleverreachClient {
 
+	// Cleverreach's default SOAP URL
 	private static final String DEFAULT_URL = "http://api.cleverreach.com/soap/interface_v5.1.php";
 
+	// Searches return no more than this value (client needs to recall to obtain
+	// more)
 	private static final int MAX_RESULTS_IN_SEARCH = 100;
 
+	// Maximum number of receivers that can be used ina batch operation
 	private static final int MAX_OPERATIONS_IN_BATCH = 50;
 
 	private static final String ATT_FLAG_IMPORT_KEY = "flag_import";
@@ -63,10 +68,23 @@ public class CleverreachClientImpl extends WebServiceGatewaySupport implements C
 	private String apiKey;
 	private Integer listId;
 
+	/**
+	 * Constructor {@link CleverreachClientImpl}
+	 * 
+	 * @param apiKey
+	 * @param listId
+	 */
 	public CleverreachClientImpl(String apiKey, Integer listId) {
 		this(DEFAULT_URL, apiKey, listId);
 	}
 
+	/**
+	 * Constructor {@link CleverreachClientImpl}
+	 * 
+	 * @param url
+	 * @param apiKey
+	 * @param listId
+	 */
 	public CleverreachClientImpl(String url, String apiKey, Integer listId) {
 		notNull(url);
 		notNull(apiKey);
@@ -86,6 +104,7 @@ public class CleverreachClientImpl extends WebServiceGatewaySupport implements C
 
 		List<CleverreachReceiver> tmpResults = null;
 
+		// start by initial page
 		int page = 0;
 
 		do {
@@ -96,6 +115,7 @@ public class CleverreachClientImpl extends WebServiceGatewaySupport implements C
 
 			page++;
 
+			// do it until no retrieving max results
 		} while (tmpResults.size() == MAX_RESULTS_IN_SEARCH);
 
 		return results;
@@ -106,7 +126,7 @@ public class CleverreachClientImpl extends WebServiceGatewaySupport implements C
 		// validation
 		notNull(receivers);
 
-		// split receiver in lots
+		// split receivers in lots (no more than the maximum number allowed)
 		List<List<CleverreachReceiver>> lots = Lists.partition(Lists.newArrayList(receivers), MAX_OPERATIONS_IN_BATCH);
 
 		for (List<CleverreachReceiver> lot : lots) {
@@ -132,7 +152,7 @@ public class CleverreachClientImpl extends WebServiceGatewaySupport implements C
 		// validation
 		notNull(receivers);
 
-		// split receiver in lots
+		// split receivers in lots (no more than the maximum number allowed)
 		List<List<CleverreachReceiver>> lots = Lists.partition(Lists.newArrayList(receivers), MAX_OPERATIONS_IN_BATCH);
 
 		for (List<CleverreachReceiver> lot : lots) {
@@ -200,25 +220,25 @@ public class CleverreachClientImpl extends WebServiceGatewaySupport implements C
 
 			receiverData.setEmail(receiverInLot.getEmail());
 
-			ReceiverAttribute receiverDataAtt = new ReceiverAttribute();
-			receiverDataAtt.setKey(ATT_FLAG_IMPORT_KEY);
-			receiverDataAtt.setValue("1");
-
-			ReceiverAttribute receiverFirstname = new ReceiverAttribute();
-			receiverFirstname.setKey(ATT_FIRSTNAME_KEY);
-			receiverFirstname.setValue(receiverInLot.getFirstname());
-
-			ReceiverAttribute receiverLastname = new ReceiverAttribute();
-			receiverLastname.setKey(ATT_LASTNAME_KEY);
-			receiverLastname.setValue(receiverInLot.getLastname());
-
-			receiverData.getReceiverAttributes().addAll(asList(receiverDataAtt, receiverFirstname, receiverLastname));
+			receiverData.getReceiverAttributes().addAll(
+					asList(att(ATT_FLAG_IMPORT_KEY, ATT_FLAG_IMPORT_VALUE_TRUE),
+							att(ATT_FIRSTNAME_KEY, receiverInLot.getFirstname()),
+							att(ATT_LASTNAME_KEY, receiverInLot.getLastname())));
 
 			request.getSubscriberData().add(receiverData);
 
 		}
 
 		return request;
+	}
+
+	private ReceiverAttribute att(String key, String value) {
+		ReceiverAttribute att = new ReceiverAttribute();
+
+		att.setKey(key);
+		att.setValue(value);
+
+		return att;
 	}
 
 	private void receiverDelete(String email) {
@@ -243,15 +263,9 @@ public class CleverreachClientImpl extends WebServiceGatewaySupport implements C
 
 			receiverData.setEmail(receiverInLot.getEmail());
 
-			ReceiverAttribute receiverFirstname = new ReceiverAttribute();
-			receiverFirstname.setKey(ATT_FIRSTNAME_KEY);
-			receiverFirstname.setValue(receiverInLot.getFirstname());
-
-			ReceiverAttribute receiverLastname = new ReceiverAttribute();
-			receiverLastname.setKey(ATT_LASTNAME_KEY);
-			receiverLastname.setValue(receiverInLot.getLastname());
-
-			receiverData.getReceiverAttributes().addAll(asList(receiverFirstname, receiverLastname));
+			receiverData.getReceiverAttributes().addAll(
+					asList(att(ATT_FIRSTNAME_KEY, receiverInLot.getFirstname()),
+							att(ATT_LASTNAME_KEY, receiverInLot.getLastname())));
 
 			request.getUserData().add(receiverData);
 
@@ -292,16 +306,16 @@ public class CleverreachClientImpl extends WebServiceGatewaySupport implements C
 		List<ReceiverData> receiverDataList = response.getReturn().getReceiverData();
 
 		for (ReceiverData receiverData : receiverDataList) {
-			// add the email and flag returned by the server
+
 			CleverreachReceiver receiverResult = new CleverreachReceiver();
 
+			// add the email
 			receiverResult.setEmail(receiverData.getEmail());
 
-			// get receiver attributes
-			List<ReceiverAttribute> receiverAttributes = receiverData.getReceiverAttributes();
+			// get receiver attributes as map key and value
+			Map<String, String> mapKeyValue = toMapKeyValue(receiverData.getReceiverAttributes());
 
-			Map<String, String> mapKeyValue = toMapKeyValue(receiverAttributes);
-
+			// it may be empty or something weird (i.e. not 0 or 1)
 			receiverResult.setFlagImport(Objects.equals(ATT_FLAG_IMPORT_VALUE_TRUE,
 					mapKeyValue.get(ATT_FLAG_IMPORT_KEY)));
 			receiverResult.setFirstname(mapKeyValue.get(ATT_FIRSTNAME_KEY));
@@ -326,7 +340,7 @@ public class CleverreachClientImpl extends WebServiceGatewaySupport implements C
 
 	private void checkResponseStatusCode(int statusCode, String method) {
 		if (statusCode != 0) {
-			throw new GeneralException("The response was for method '" + method + "' not successfull");
+			throw new GeneralException("The response for method '" + method + "' was not successful.");
 		}
 
 	}

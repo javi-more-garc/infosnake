@@ -14,13 +14,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.common.collect.Lists;
+import com.jmg.iic.core.GeneralException;
 
 /**
+ * Implementation of {@link InfosnakeClient}
+ * 
  * @author Javier Moreno Garcia
  *
  */
 public class InfosnakeClientImpl implements InfosnakeClient {
 
+	// Infosnake's default SOAP URL
 	private static final String DEFAULT_URL = "http://www.infosnake.ch/prev/cleverreach_interface/recipients.json";
 
 	private Logger logger = LoggerFactory.getLogger(InfosnakeClientImpl.class);
@@ -47,16 +51,15 @@ public class InfosnakeClientImpl implements InfosnakeClient {
 		ResponseEntity<InfosnakeUser[]> response = infosnakeRestTemplate.getForEntity(url, InfosnakeUser[].class);
 
 		if (response.getStatusCode() != HttpStatus.OK) {
-			// TODO throw ex
 			logger.info("Returning: status '{}'.", response.getStatusCode());
-			return null;
-		} else {
-			List<InfosnakeUser> result = Lists.newArrayList(response.getBody());
-			logger.info("Returning: status 'OK' with body '{}'.", result);
 
-			return result;
-
+			throw new GeneralException("Connection to Infosnake failed");
 		}
+
+		List<InfosnakeUser> result = Lists.newArrayList(response.getBody());
+		logger.info("Returning: status 'OK' with body '{}'.", result);
+
+		return result;
 
 	}
 }

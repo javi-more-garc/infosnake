@@ -18,6 +18,9 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 /**
  * 
+ * Generalization of {@link HttpComponentsClientHttpRequestFactory} to be able
+ * to perform preemptive auth.
+ * 
  * @author Javier Moreno Garcia
  *
  */
@@ -53,7 +56,8 @@ public class BasicAuthHttpComponentsClientHttpRequestFactory extends HttpCompone
 		localcontext.setAuthCache(authCache);
 
 		BasicCredentialsProvider credsProvider = new BasicCredentialsProvider();
-		// change if we need more fine grained scope
+
+		// change if we need more fine grained scope in the future
 		credsProvider.setCredentials(AuthScope.ANY, this.credentials);
 
 		localcontext.setCredentialsProvider(credsProvider);

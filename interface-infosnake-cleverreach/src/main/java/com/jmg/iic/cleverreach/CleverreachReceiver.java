@@ -8,6 +8,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
+ * Class to encapsulate a Cleverreach's receiver
+ * 
  * @author Javier Moreno Garcia
  *
  */
