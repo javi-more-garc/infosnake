@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -42,13 +43,13 @@ public class MatchServiceImpl implements MatchService {
 	private CleverreachClient cleverClient;
 
 	@Inject
-	private InfosnakeClient userClient;
+	private InfosnakeClient infoClient;
 
 	@Override
 	public void matchValues() {
 
 		// 1 get all users from Infosnake
-		List<InfosnakeUser> users = userClient.getAllUsers();
+		List<InfosnakeUser> users = infoClient.getAllUsers();
 
 		// 2 get all receivers from Cleverreach
 		List<CleverreachReceiver> receivers = cleverClient.getAllReceivers();
@@ -181,7 +182,7 @@ public class MatchServiceImpl implements MatchService {
 			CleverreachReceiver value = entry.getValue();
 
 			// returning only those imported (flag import (1)
-			if (value.getFlagImport()) {
+			if (Objects.equals(Boolean.TRUE, value.getFlagImport())) {
 				result.put(entry.getKey(), value);
 			}
 
