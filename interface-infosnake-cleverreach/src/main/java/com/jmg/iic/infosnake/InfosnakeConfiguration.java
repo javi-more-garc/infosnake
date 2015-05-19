@@ -67,7 +67,7 @@ public class InfosnakeConfiguration {
 
 		// retrieve properties
 		String hostname = env.getRequiredProperty("infosnake.host");
-		int port = Integer.parseInt(env.getRequiredProperty("infosnake.port"));
+		int port = env.getRequiredProperty("infosnake.port", Integer.class);
 
 		UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(
 				env.getRequiredProperty("infosnake.user.username"), env.getRequiredProperty("infosnake.user.password"));

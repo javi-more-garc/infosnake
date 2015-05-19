@@ -37,7 +37,7 @@ public class CleverreachConfiguration {
 
 		String url = env.getRequiredProperty("cleverreach.api.url");
 		String apiKey = env.getRequiredProperty("cleverreach.api.key");
-		Integer listId = Integer.parseInt(env.getRequiredProperty("cleverreach.list.id"));
+		Integer listId = env.getRequiredProperty("cleverreach.list.id", Integer.class);
 
 		CleverreachClientImpl client = new CleverreachClientImpl(url, apiKey, listId);
 
