@@ -22,7 +22,7 @@ public interface MatchService {
 	 * 4 remove from Cleverreach those users that were imported and whose email
 	 * does not appear in Infosnake <br/>
 	 * 
-	 * 6 update in Cleverreach those users whose emails appear both in Infosnake
+	 * 5 update in Cleverreach those users whose emails appear both in Infosnake
 	 * and Cleverreach <br/>
 	 */
 	public void matchValues();
